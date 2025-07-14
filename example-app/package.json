@@ -13,10 +13,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@capacitor/core": "latest",
-    "capacitor-photo-editor": "file:..",
+    "@capacitor/android": "7.0.0",
+    "@capacitor/camera": "^7.0.1",
+    "@capacitor/core": "^7.0.0",
     "@capacitor/ios": "7.0.0",
-    "@capacitor/android": "7.0.0"
+    "capacitor-photo-editor": "file:.."
   },
   "devDependencies": {
     "@capacitor/cli": "latest",
