@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App-wide theme -->
+    <style name="AppTheme.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar">
+
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
+        <item name="colorOnPrimary">#FFF</item>
+        <item name="colorOnSecondary">#FFF</item>
+        <item name="colorError">#FF0000</item>
+
+        <item name="windowNoTitle">true</item>
+        <item name="android:background">@null</item>
+        <item name="colorSecondary">@color/colorAccent</item>
+    </style>
+
+
+    <style name="AppTheme.Dialog.DialogThemeFullscreen" parent="Theme.MaterialComponents.Dialog">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="boxStrokeColor">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
+        <item name="colorOnPrimary">#FFF</item>
+        <item name="colorOnSecondary">#FFF</item>
+        <item name="colorError">#FF0000</item>
+    </style>
+
+    <style name="WhiteTextButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="EditorToolButton">
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_margin">4dp</item>
+        <item name="android:backgroundTint">#555</item>
+        <item name="android:textColor">#FFF</item>
+        <item name="android:background">@android:color/darker_gray</item>
+    </style>
+
+
+    <!-- Dans styles.xml -->
+    <style name="EditTextNoUnderline" parent="Widget.AppCompat.EditText">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="Widget.Theme.Android.ButtonBar.Fullscreen" parent="">
+        <item name="android:background">@color/black_overlay</item>
+        <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
+    </style>
+    <!-- res/values/styles.xml -->
+    <style name="CustomDialogTheme" parent="Theme.MaterialComponents.DayNight.Dialog">
+        <item name="colorSurface">#FFFFFF</item>         <!-- ✅ vrai blanc -->
+        <item name="colorOnSurface">#000000</item>       <!-- texte noir -->
+        <item name="backgroundColor">#FFFFFF</item>
+    </style>
+
+</resources>

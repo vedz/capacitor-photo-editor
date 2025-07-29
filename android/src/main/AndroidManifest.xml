@@ -1,7 +1,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="fr.binova.capacitor.photoeditor">
 
-    <application>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
+    <!-- Pour Android < 33 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <!-- Pour Android 13+ -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+
+
+    <application android:theme="@style/AppTheme.NoActionBar">
+
         <activity
             android:name="fr.binova.capacitor.photoeditor.PhotoEditorActivity"
             android:exported="false" />

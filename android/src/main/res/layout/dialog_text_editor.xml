@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dialog_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="#CC000000">
+
+    <EditText
+        android:id="@+id/edit_text_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Saisis ton texte ici"
+        android:background="@android:color/transparent"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp" />
+
+    <SeekBar
+        android:id="@+id/seek_text_size"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="80"
+        android:progress="24"
+        android:layout_marginTop="12dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="12dp"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btn_text_color"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Couleur Texte" />
+
+        <Button
+            android:id="@+id/btn_bg_color"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Fond" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_validate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Valider"
+        android:layout_marginTop="16dp" />
+</LinearLayout>
