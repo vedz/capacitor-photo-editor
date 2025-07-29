@@ -144,9 +144,9 @@ class TextModal : DialogFragment() {
         binding.text.setText("")
         if (text !== null){
             val textEditorListener = mTextEditorListener
-//            if (newText.isNotEmpty() && textEditorListener != null) {
-//                textEditorListener.onDone(newText, textStyleBuider)
-//            }
+            if (newText.isNotEmpty() && textEditorListener != null) {
+                textEditorListener.onDone(newText, textStyleBuider)
+            }
         }else{
 
             (activity as? PhotoEditorActivity)?.photoEditor?.addText(newText, textStyleBuider)
