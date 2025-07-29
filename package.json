@@ -1,5 +1,5 @@
 {
-  "name": "capacitor-photo-editor",
+  "name": "binova-capacitor-photo-editor",
   "version": "0.0.1",
   "description": "PhotoEditor Capacitor",
   "main": "dist/plugin.cjs.js",
@@ -19,10 +19,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://vedgoh@bitbucket.org/binovait/photo-editor.git.git"
+    "url": "git+https://github.com/vedz/capacitor-photo-editor.git"
   },
   "bugs": {
-    "url": "https://vedgoh@bitbucket.org/binovait/photo-editor.git/issues"
+    "url": "https://github.com/vedz/capacitor-photo-editor.git/issues"
   },
   "keywords": [
     "capacitor",
