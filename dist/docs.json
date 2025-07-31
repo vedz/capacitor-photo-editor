@@ -1,0 +1,83 @@
+{
+  "api": {
+    "name": "PhotoEditorPlugin",
+    "slug": "photoeditorplugin",
+    "docs": "",
+    "tags": [],
+    "methods": [
+      {
+        "name": "echo",
+        "signature": "(options: { value: string; }) => Promise<{ value: string; }>",
+        "parameters": [
+          {
+            "name": "options",
+            "docs": "",
+            "type": "{ value: string; }"
+          }
+        ],
+        "returns": "Promise<{ value: string; }>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "echo"
+      },
+      {
+        "name": "editPhoto",
+        "signature": "(options: EditPhotoOptions) => Promise<EditPhotoResult>",
+        "parameters": [
+          {
+            "name": "options",
+            "docs": "",
+            "type": "EditPhotoOptions"
+          }
+        ],
+        "returns": "Promise<EditPhotoResult>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [
+          "EditPhotoResult",
+          "EditPhotoOptions"
+        ],
+        "slug": "editphoto"
+      }
+    ],
+    "properties": []
+  },
+  "interfaces": [
+    {
+      "name": "EditPhotoResult",
+      "slug": "editphotoresult",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "image",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "EditPhotoOptions",
+      "slug": "editphotooptions",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "image",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string"
+        }
+      ]
+    }
+  ],
+  "enums": [],
+  "typeAliases": [],
+  "pluginConfigs": []
+}
