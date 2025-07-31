@@ -1,8 +1,10 @@
 package fr.binova.capacitor.photoeditor
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
@@ -18,6 +20,7 @@ import java.io.File
 import android.graphics.Paint
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.GradientDrawable
+import android.nfc.Tag
 import android.os.Environment
 import android.util.Log
 import android.view.Gravity
@@ -32,6 +35,7 @@ import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.annotation.RequiresPermission
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import com.skydoves.colorpickerview.ColorEnvelope
@@ -48,7 +52,14 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import fr.binova.capacitor.photoeditor.databinding.ActivityPhotoEditorBinding
 import androidx.core.graphics.drawable.toDrawable
+import androidx.lifecycle.lifecycleScope
+import ja.burhanrashid52.photoeditor.SaveFileResult
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.FileOutputStream
 import java.io.IOException
+import java.net.URI
 
 class PhotoEditorActivity : AppCompatActivity() {
 
@@ -56,13 +67,14 @@ class PhotoEditorActivity : AppCompatActivity() {
     public lateinit var photoEditor: PhotoEditor
     private lateinit var imagePath: String
 
-    private lateinit var photoEditorView: View
+    private lateinit var photoEditorView: PhotoEditorView
     private lateinit var mainMenuBar: View
     private lateinit var subMenuContainer: View
     private lateinit var bottomControlBar: View
     private lateinit var cancelButton: View
     private lateinit var doneButton: View
     private lateinit var selectedToolText: TextView
+    private lateinit var mSaveFileHelper: FileSaveHelper
 
     private var currentTool: String? = null
     private var mProgressDialog: AlertDialog? = null
@@ -96,6 +108,9 @@ class PhotoEditorActivity : AppCompatActivity() {
             finish()
             return
         }
+
+        // No scaling or scrolling needed as the PhotoEditorView now takes all available space
+        // and will automatically maintain the image's aspect ratio
         mainMenuBar = findViewById(R.id.main_menu_bar)
         subMenuContainer = findViewById(R.id.sub_menu_container)
         bottomControlBar = findViewById(R.id.bottom_control_bar)
@@ -135,7 +150,25 @@ class PhotoEditorActivity : AppCompatActivity() {
         }
 
         doneButton.setOnClickListener {
-            saveEditedImage()
+            try {
+                saveImageTestAsync(
+                    onSaved = { file ->
+                        Toast.makeText(this, "Image sauvegardée avec succès !", Toast.LENGTH_LONG)
+                            .show()
+                        val resultIntent = Intent()
+                        resultIntent.putExtra("editedImagePath", file.absolutePath)
+                        setResult(RESULT_OK, resultIntent)
+                        finish()
+                    },
+                    onError = { error ->
+                        Log.e("ERREUR", "Une erreur est survenue", error)
+                        Toast.makeText(this, "Une erreur est survenue", Toast.LENGTH_LONG).show()
+                    }
+                )
+            }
+            catch (e: SecurityException) {
+                Log.e("ERREUR", "Permissions manquantes",)
+            }
         }
 
         findViewById<View>(R.id.undo).setOnClickListener {
@@ -145,6 +178,9 @@ class PhotoEditorActivity : AppCompatActivity() {
             photoEditor.redo()
         }
         showDrawSubmenu()
+
+
+        mSaveFileHelper = FileSaveHelper(this)
 
     }
 
@@ -216,6 +252,7 @@ class PhotoEditorActivity : AppCompatActivity() {
                         TextModal().show(supportFragmentManager, "textEdit")
                         binding.selectedToolName.text = ""
                     }
+
                     "Stylo" -> {
                         shapeBuilder.withShapeType(ShapeType.Brush)
                         photoEditor.setBrushDrawingMode(true)
@@ -223,6 +260,7 @@ class PhotoEditorActivity : AppCompatActivity() {
                         photoEditor.setShape(shapeBuilder)
 
                     }
+
                     "Ligne" -> {
                         shapeBuilder.withShapeType(ShapeType.Line)
                         photoEditor.setBrushDrawingMode(true)
@@ -254,6 +292,7 @@ class PhotoEditorActivity : AppCompatActivity() {
                     "Gomme" -> {
                         subMenuTools.visibility = View.GONE
                         photoEditor.brushEraser()
+                        subMenuTools.visibility = View.VISIBLE
                     }
                 }
             }
@@ -348,6 +387,7 @@ class PhotoEditorActivity : AppCompatActivity() {
 
         photoEditor = PhotoEditor.Builder(this, photoEditorView)
             .setPinchTextScalable(true)
+            .setClipSourceImage(true)
             .build()
 
         shapeBuilder = ShapeBuilder()
@@ -358,6 +398,7 @@ class PhotoEditorActivity : AppCompatActivity() {
                 numberOfAddedViews: Int
             ) {
             }
+
             override fun onEditTextChangeListener(
                 rootView: View,
                 text: String,
@@ -386,7 +427,7 @@ class PhotoEditorActivity : AppCompatActivity() {
                         inputText: String,
                         textStyleBuilder: TextStyleBuilder
                     ) {
-                        photoEditor.editText(rootView, inputText,textStyleBuilder)
+                        photoEditor.editText(rootView, inputText, textStyleBuilder)
                     }
                 })
                 modal.show(supportFragmentManager, "textEdit")
@@ -411,6 +452,7 @@ class PhotoEditorActivity : AppCompatActivity() {
         })
 
     }
+
     protected fun showLoading(message: String) {
         val progressBar = ProgressBar(this).apply {
             isIndeterminate = true
@@ -447,64 +489,115 @@ class PhotoEditorActivity : AppCompatActivity() {
         mProgressDialog = null
     }
 
-    private fun saveEditedImage() {
-        showLoading("Enregistrement...")
-        val fileName = "edited_image_${System.currentTimeMillis()}.png"
-        val galleryDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-        val file = File(galleryDir, fileName)
-        val settings = SaveSettings.Builder()
-            .setClearViewsEnabled(true)
-            .setTransparencyEnabled(true)
-            .build()
 
-        try {
-            photoEditor.saveAsFile(
-                file.absolutePath,
-                settings,
-                object : PhotoEditor.OnSaveListener {
-                    override fun onSuccess(imagePath: String) {
-                        hideLoading()
-                        val resultIntent = Intent()
-                        resultIntent.putExtra("editedImagePath", imagePath)
-                        setResult(RESULT_OK, resultIntent)
-                        finish()
+    @RequiresPermission(allOf = [Manifest.permission.WRITE_EXTERNAL_STORAGE])
+    private fun saveImageTestAsync(onSaved: (File) -> Unit, onError: (Throwable) -> Unit = {}) {
+        val hasStoragePermission = ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
+
+        if (hasStoragePermission || FileSaveHelper.isSdkHigherThan28()) {
+            showLoading("Sauvegarde...")
+
+            lifecycleScope.launch(Dispatchers.IO) {
+                try {
+                    val originalFile = File(URI(imagePath))
+                    val directory = originalFile.parentFile ?: throw IOException("Chemin invalide")
+                    val file = File(directory, "edited_${System.currentTimeMillis()}.jpg")
+
+                    val finalBitmap = withContext(Dispatchers.Main) {
+                        photoEditor.saveCustom()
                     }
 
-                    override fun onFailure(exception: Exception) {
-                        Toast.makeText(
-                            this@PhotoEditorActivity,
-                            "Erreur : ${exception.message}",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                    val savedFile =
+                        saveBitmapToFile(this@PhotoEditorActivity, finalBitmap, file.absolutePath)
+
+                    withContext(Dispatchers.Main) {
                         hideLoading()
+                        onSaved(savedFile)
                     }
-                })
-        } catch (e: SecurityException) {
-            // Permission manquante
-            setResult(RESULT_CANCELED)
-            finish()
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        hideLoading()
+                        onError(e)
+                    }
+                }
+            }
+        } else {
+            Log.e("ERREUR", "Une erreur est survenue")
+            Toast.makeText(this, "Une erreur est survenue", Toast.LENGTH_LONG).show()
         }
     }
+
+
+    @RequiresPermission(allOf = [Manifest.permission.WRITE_EXTERNAL_STORAGE])
+    private fun saveImageTest() {
+        val hasStoragePermission = ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
+        if (hasStoragePermission || FileSaveHelper.isSdkHigherThan28()) {
+            showLoading("Enregistrement...")
+
+            val originalFile = File(URI(imagePath))
+            val directory = originalFile.parentFile ?: throw IOException("Invalid path")
+            val file = File(directory, "edited_${System.currentTimeMillis()}.jpg")
+
+            val finalBitmap = photoEditor.saveCustom() // ton image finale haute résolution
+
+            val result = saveBitmapToFile(this, finalBitmap, file.absolutePath)
+            hideLoading()
+        } else {
+//            requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
+    }
+
+    fun saveBitmapToFile(
+        context: Context,
+        bitmap: Bitmap,
+        filePath: String,
+        format: Bitmap.CompressFormat = Bitmap.CompressFormat.JPEG,
+        quality: Int = 90
+    ): File {
+        val file = File(filePath)
+        file.parentFile?.mkdirs()
+
+        FileOutputStream(file).use { output ->
+            bitmap.compress(format, quality, output)
+            output.flush()
+        }
+
+        return file
+    }
+
 
     private fun saveImage() {
         try {
             val originalFile = File(imagePath)
             val directory = originalFile.parentFile ?: throw IOException("Invalid path")
             val file = File(directory, "edited_${System.currentTimeMillis()}.jpg")
-            photoEditor.saveAsFile(file.absolutePath, object : PhotoEditor.OnSaveListener {
-                override fun onSuccess(imagePath: String) {
-                    val resultIntent = Intent().apply {
-                        putExtra("editedImagePath", imagePath)
+            val settings = SaveSettings.Builder()
+                .setClearViewsEnabled(true)
+                .setTransparencyEnabled(true)
+                .build()
+            photoEditor.saveAsFile(
+                file.absolutePath,
+                settings,
+                object : PhotoEditor.OnSaveListener {
+                    override fun onSuccess(imagePath: String) {
+                        val resultIntent = Intent().apply {
+                            putExtra("editedImagePath", imagePath)
+                        }
+                        setResult(RESULT_OK, resultIntent)
+                        finish()
                     }
-                    setResult(RESULT_OK, resultIntent)
-                    finish()
-                }
 
-                override fun onFailure(e: Exception) {
-                    setResult(RESULT_CANCELED)
-                    finish()
-                }
-            })
+                    override fun onFailure(e: Exception) {
+                        setResult(RESULT_CANCELED)
+                        finish()
+                    }
+                })
         } catch (e: SecurityException) {
             // Permission manquante
             setResult(RESULT_CANCELED)
