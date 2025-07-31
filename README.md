@@ -14,6 +14,8 @@ npx cap sync
 <docgen-index>
 
 * [`echo(...)`](#echo)
+* [`editPhoto(...)`](#editphoto)
+* [Interfaces](#interfaces)
 
 </docgen-index>
 
@@ -33,5 +35,37 @@ echo(options: { value: string; }) => Promise<{ value: string; }>
 **Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
 
 --------------------
+
+
+### editPhoto(...)
+
+```typescript
+editPhoto(options: EditPhotoOptions) => Promise<EditPhotoResult>
+```
+
+| Param         | Type                                                          |
+| ------------- | ------------------------------------------------------------- |
+| **`options`** | <code><a href="#editphotooptions">EditPhotoOptions</a></code> |
+
+**Returns:** <code>Promise&lt;<a href="#editphotoresult">EditPhotoResult</a>&gt;</code>
+
+--------------------
+
+
+### Interfaces
+
+
+#### EditPhotoResult
+
+| Prop        | Type                |
+| ----------- | ------------------- |
+| **`image`** | <code>string</code> |
+
+
+#### EditPhotoOptions
+
+| Prop        | Type                |
+| ----------- | ------------------- |
+| **`image`** | <code>string</code> |
 
 </docgen-api>
