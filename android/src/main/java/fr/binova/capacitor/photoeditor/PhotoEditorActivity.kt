@@ -48,6 +48,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import fr.binova.capacitor.photoeditor.databinding.ActivityPhotoEditorBinding
 import androidx.core.graphics.drawable.toDrawable
+import java.io.IOException
 
 class PhotoEditorActivity : AppCompatActivity() {
 
@@ -487,7 +488,9 @@ class PhotoEditorActivity : AppCompatActivity() {
 
     private fun saveImage() {
         try {
-            val file = File(cacheDir, "edited_${System.currentTimeMillis()}.jpg")
+            val originalFile = File(imagePath)
+            val directory = originalFile.parentFile ?: throw IOException("Invalid path")
+            val file = File(directory, "edited_${System.currentTimeMillis()}.jpg")
             photoEditor.saveAsFile(file.absolutePath, object : PhotoEditor.OnSaveListener {
                 override fun onSuccess(imagePath: String) {
                     val resultIntent = Intent().apply {
