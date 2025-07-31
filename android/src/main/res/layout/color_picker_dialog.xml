@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Couleur"
+        android:textSize="20dp"
+        android:textFontWeight="700"
+        android:layout_marginBottom="20dp"
+        android:textColor="#000"
+        />
+
+    <com.skydoves.colorpickerview.ColorPickerView
+        android:id="@+id/colorPickerView"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        app:preferenceName="MyColorPicker"
+        />
+
+
+    <!-- Brightness -->
+    <com.skydoves.colorpickerview.sliders.BrightnessSlideBar
+        android:id="@+id/brightnessSlider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:borderColor_BrightnessSlider="@android:color/darker_gray"
+        app:borderSize_BrightnessSlider="5"
+        app:selector_BrightnessSlider="@drawable/colorpickerview_wheel"
+        android:layout_marginTop="8dp"/>
+
+
+    <!-- Alpha -->
+    <com.skydoves.colorpickerview.sliders.AlphaSlideBar
+        android:id="@+id/alphaSlider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:borderColor_AlphaSlideBar="@android:color/darker_gray"
+        app:borderSize_AlphaSlideBar="5"
+        app:selector_AlphaSlideBar="@drawable/colorpickerview_wheel"
+        android:layout_marginTop="8dp"
+        />
+
+
+    <!-- Couleurs prédéfinies -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:padding="4dp">
+
+        <LinearLayout
+            android:id="@+id/predefinedColorsContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"/>
+    </HorizontalScrollView>
+
+
+    <View
+        android:id="@+id/color_preview"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginVertical="16dp"
+        android:background="@drawable/circle_preview" />
+
+    <Button
+        android:id="@+id/btn_apply_color"
+        android:textColor="#fff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Appliquer"
+        android:layout_marginTop="12dp"/>
+</LinearLayout>
