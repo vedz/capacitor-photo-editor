@@ -1,17 +1,22 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/editor_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000">
 
     <!-- Zone d'édition -->
-    <ja.burhanrashid52.photoeditor.PhotoEditorView
-        android:id="@+id/photo_editor_view"
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/menu_area"
-        android:background="#222" />
+        android:layout_above="@id/menu_area"
+        android:layout_height="match_parent">
+        <ja.burhanrashid52.photoeditor.PhotoEditorView
+            android:id="@+id/photo_editor_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="#222" />
+    </FrameLayout>
 
 
     <!-- Barre de contrôle en bas avec Annuler, Titre de l’outil, Terminer -->
@@ -40,18 +45,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Taille : "
-                android:textColor="#fff"/>
+                android:textColor="#fff" />
 
             <SeekBar
                 android:id="@+id/brush_size_seekbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:max="100"
                 android:maxWidth="300dp"
                 android:min="1"
-                android:max="100"
                 android:progress="20"
-                android:thumbTint="#ffffff"
-                android:progressTint="#ffffff" />
+                android:progressTint="#ffffff"
+                android:thumbTint="#ffffff" />
 
         </LinearLayout>
 
@@ -91,53 +96,6 @@
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp">
 
-<!--                &lt;!&ndash; Exemple : Marquage &ndash;&gt;-->
-<!--                <LinearLayout-->
-<!--                    android:id="@+id/menu_draw"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:gravity="center"-->
-<!--                    android:orientation="vertical"-->
-<!--                    android:padding="8dp">-->
-
-<!--                    <ImageView-->
-<!--                        android:layout_width="48dp"-->
-<!--                        android:layout_height="48dp"-->
-<!--                        android:background="@drawable/circle_selector"-->
-<!--                        android:padding="10dp"-->
-<!--                        android:src="@drawable/ic_draw" />-->
-
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text="Marquage"-->
-<!--                        android:textColor="#ffffff"-->
-<!--                        android:textSize="12sp" />-->
-<!--                </LinearLayout>-->
-
-<!--                &lt;!&ndash; Exemple : Texte &ndash;&gt;-->
-<!--                <LinearLayout-->
-<!--                    android:id="@+id/menu_text"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:gravity="center"-->
-<!--                    android:orientation="vertical"-->
-<!--                    android:padding="8dp">-->
-
-<!--                    <ImageView-->
-<!--                        android:layout_width="48dp"-->
-<!--                        android:layout_height="48dp"-->
-<!--                        android:background="@drawable/circle_selector"-->
-<!--                        android:padding="10dp"-->
-<!--                        android:src="@drawable/ic_text" />-->
-
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text="Texte"-->
-<!--                        android:textColor="#ffffff"-->
-<!--                        android:textSize="12sp" />-->
-<!--                </LinearLayout>-->
             </LinearLayout>
         </HorizontalScrollView>
 
@@ -156,57 +114,56 @@
 
         <TextView
             android:id="@+id/btn_cancel"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:gravity="start"
             android:text="@string/cancel"
             android:textColor="#2196F3"
-            android:textSize="14sp" />
+            android:textSize="13sp" />
+
         <ImageView
             android:id="@+id/undo"
-            android:layout_gravity="start|center"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_undo"
+            android:layout_gravity="start|center"
+            android:layout_weight="0.8"
             android:contentDescription="@string/undo"
-            />
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_undo" />
 
         <TextView
             android:id="@+id/selected_tool_name"
-            android:minWidth="10dp"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.8"
             android:gravity="center"
+            android:minWidth="10dp"
             android:text=""
             android:textColor="#ffffff"
             android:textSize="14sp"
-            android:visibility="visible"/>
+            android:visibility="visible" />
+
         <ImageView
             android:id="@+id/redo"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_redo"
+            android:layout_gravity="end|center"
+            android:layout_weight="0.8"
             android:contentDescription="@string/redo"
             android:paddingHorizontal="5dp"
-            android:layout_gravity="end|center"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_redo"
 
             />
 
         <TextView
             android:id="@+id/btn_done"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:gravity="end"
             android:text="Terminé"
             android:textColor="#2196F3"
-            android:textSize="14sp" />
+            android:textSize="13sp" />
     </LinearLayout>
 
 </RelativeLayout>
