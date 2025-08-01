@@ -1,5 +1,12 @@
 apply plugin: 'com.android.application'
 
+// Fix for debugRuntimeClasspathCopy configuration issue
+configurations {
+    debugRuntimeClasspathCopy {
+        canBeConsumed = false
+    }
+}
+
 android {
     namespace "com.example.plugin"
     compileSdk rootProject.ext.compileSdkVersion

@@ -1,3 +1,0 @@
-include ':app', ':photoeditor'
-// Define the project directory for the photoeditor module
-project(':photoeditor').projectDir = new File('photoeditor')

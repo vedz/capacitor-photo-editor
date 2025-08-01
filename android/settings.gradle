@@ -1,6 +1,6 @@
 include ':capacitor-android'
-project(':capacitor-android').projectDir = new File('../node_modules/@capacitor/android/capacitor')
+project(':capacitor-android').projectDir = new File('..\\node_modules\\@capacitor\\android\\capacitor')
 
-
-include ':photoeditor'
-project(':photoeditor').projectDir = new File('lib/photoeditor/photoeditor')
+//// Include the photoeditor module directly from the lib/photoeditor directory
+//include ':photoeditor'
+//project(':photoeditor').projectDir = new File('..\\node_modules\\capacitor-photo-editor\\android\\lib\\photoeditor')
