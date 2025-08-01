@@ -13,7 +13,7 @@ import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
 import fr.binova.capacitor.photoeditor.databinding.FragmentTextModalBinding
-import ja.burhanrashid52.photoeditor.TextStyleBuilder
+import fr.binova.capacitor.photoeditor.TextStyleBuilder
 
 private const val ARG_TEXT = "text"
 private const val ARG_TARGET_TAG = "target_tag"

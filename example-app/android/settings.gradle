@@ -4,7 +4,3 @@ project(':capacitor-cordova-android-plugins').projectDir = new File('.\\capacito
 
 // Apply the capacitor settings
 apply from: 'capacitor.settings.gradle'
-
-// Make sure the photoeditor module is included
-include ':photoeditor'
-project(':photoeditor').projectDir = new File('..\\..\\android\\lib\\photoeditor\\photoeditor')
