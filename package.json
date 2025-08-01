@@ -1,15 +1,13 @@
 {
   "name": "binova-capacitor-photo-editor",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "PhotoEditor Capacitor",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
   "unpkg": "dist/plugin.js",
   "files": [
-    "android/src/main/",
-    "android/build.gradle",
-    "android/lib/photoeditor",
+    "android/",
     "dist/",
     "ios/Sources",
     "ios/Tests",
