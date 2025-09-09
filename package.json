@@ -1,6 +1,6 @@
 {
   "name": "binova-capacitor-photo-editor",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "PhotoEditor Capacitor",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
