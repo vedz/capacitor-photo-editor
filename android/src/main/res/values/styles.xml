@@ -18,6 +18,12 @@
 
         <item name="colorSurface">#FFFFFF</item>
         <item name="colorOnSurface">#000000</item>
+
+        <!-- your colors ... -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <!-- Light icons if background is light -->
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 
 

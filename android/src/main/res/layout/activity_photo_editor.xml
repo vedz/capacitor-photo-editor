@@ -1,169 +1,177 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/editor_root"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/global_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000">
+    android:background="@color/colorPrimary">
 
-    <!-- Zone d'édition -->
-
-    <FrameLayout
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/editor_root"
         android:layout_width="match_parent"
-        android:layout_above="@id/menu_area"
-        android:layout_height="match_parent">
-        <fr.binova.capacitor.photoeditor.PhotoEditorView
-            android:id="@+id/photo_editor_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="#222" />
-    </FrameLayout>
+        android:layout_height="match_parent"
+        android:background="#000">
 
+        <!-- Zone d'édition -->
 
-    <!-- Barre de contrôle en bas avec Annuler, Titre de l’outil, Terminer -->
-    <LinearLayout
-        android:id="@+id/menu_area"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/bottom_control_bar"
-        android:background="#111"
-        android:orientation="vertical">
-
-        <!-- Sous-menu contextuel (outils, couleurs, etc.) -->
-
-        <LinearLayout
-            android:id="@+id/sub_menu_tools"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#111"
-            android:fillViewport="true"
-            android:orientation="horizontal"
-            android:padding="16dp"
-            android:visibility="gone">
+            android:layout_height="match_parent"
+            android:layout_above="@id/menu_area">
 
-
-            <TextView
+            <fr.binova.capacitor.photoeditor.PhotoEditorView
+                android:id="@+id/photo_editor_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Taille : "
-                android:textColor="#fff" />
+                android:layout_gravity="center"
+                android:background="#222" />
+        </FrameLayout>
 
-            <SeekBar
-                android:id="@+id/brush_size_seekbar"
+
+        <!-- Barre de contrôle en bas avec Annuler, Titre de l’outil, Terminer -->
+        <LinearLayout
+            android:id="@+id/menu_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/bottom_control_bar"
+            android:background="#111"
+            android:orientation="vertical">
+
+            <!-- Sous-menu contextuel (outils, couleurs, etc.) -->
+
+            <LinearLayout
+                android:id="@+id/sub_menu_tools"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:max="100"
-                android:maxWidth="300dp"
-                android:min="1"
-                android:progress="20"
-                android:progressTint="#ffffff"
-                android:thumbTint="#ffffff" />
+                android:background="#111"
+                android:fillViewport="true"
+                android:orientation="horizontal"
+                android:padding="16dp"
+                android:visibility="gone">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Taille : "
+                    android:textColor="#fff" />
+
+                <SeekBar
+                    android:id="@+id/brush_size_seekbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="100"
+                    android:maxWidth="300dp"
+                    android:min="1"
+                    android:progress="20"
+                    android:progressTint="#ffffff"
+                    android:thumbTint="#ffffff" />
+
+            </LinearLayout>
+
+            <HorizontalScrollView
+                android:id="@+id/sub_menu_container"
+                android:layout_width="match_parent"
+                android:layout_height="96dp"
+                android:background="#111"
+                android:fillViewport="true"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:id="@+id/sub_menu_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp" />
+            </HorizontalScrollView>
+
+            <!-- Menu principal -->
+            <HorizontalScrollView
+                android:id="@+id/main_menu_bar"
+                android:layout_width="match_parent"
+                android:layout_height="96dp"
+                android:background="#111"
+                android:fillViewport="true"
+                android:visibility="visible">
+
+                <LinearLayout
+                    android:id="@+id/main_menu_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp">
+
+                </LinearLayout>
+            </HorizontalScrollView>
 
         </LinearLayout>
 
-        <HorizontalScrollView
-            android:id="@+id/sub_menu_container"
+        <LinearLayout
+            android:id="@+id/bottom_control_bar"
             android:layout_width="match_parent"
-            android:layout_height="96dp"
+            android:layout_height="48dp"
+            android:layout_alignParentBottom="true"
             android:background="#111"
-            android:fillViewport="true"
-            android:visibility="gone">
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
 
-            <LinearLayout
-                android:id="@+id/sub_menu_content"
+            <TextView
+                android:id="@+id/btn_cancel"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp" />
-        </HorizontalScrollView>
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="@string/cancel"
+                android:textColor="#2196F3"
+                android:textSize="13sp" />
 
-        <!-- Menu principal -->
-        <HorizontalScrollView
-            android:id="@+id/main_menu_bar"
-            android:layout_width="match_parent"
-            android:layout_height="96dp"
-            android:background="#111"
-            android:fillViewport="true"
-            android:visibility="visible">
+            <ImageView
+                android:id="@+id/undo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center"
+                android:layout_weight="0.8"
+                android:contentDescription="@string/undo"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_undo" />
 
-            <LinearLayout
-                android:id="@+id/main_menu_container"
+            <TextView
+                android:id="@+id/selected_tool_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8"
+                android:gravity="center"
+                android:minWidth="10dp"
+                android:text=""
+                android:textColor="#ffffff"
+                android:textSize="14sp"
+                android:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/redo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center"
+                android:layout_weight="0.8"
+                android:contentDescription="@string/redo"
+                android:paddingHorizontal="5dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_redo"
+
+                />
+
+            <TextView
+                android:id="@+id/btn_done"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp">
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:text="Terminé"
+                android:textColor="#2196F3"
+                android:textSize="13sp" />
+        </LinearLayout>
 
-            </LinearLayout>
-        </HorizontalScrollView>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/bottom_control_bar"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_alignParentBottom="true"
-        android:background="#111"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp">
-
-        <TextView
-            android:id="@+id/btn_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="start"
-            android:text="@string/cancel"
-            android:textColor="#2196F3"
-            android:textSize="13sp" />
-
-        <ImageView
-            android:id="@+id/undo"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start|center"
-            android:layout_weight="0.8"
-            android:contentDescription="@string/undo"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_undo" />
-
-        <TextView
-            android:id="@+id/selected_tool_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.8"
-            android:gravity="center"
-            android:minWidth="10dp"
-            android:text=""
-            android:textColor="#ffffff"
-            android:textSize="14sp"
-            android:visibility="visible" />
-
-        <ImageView
-            android:id="@+id/redo"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|center"
-            android:layout_weight="0.8"
-            android:contentDescription="@string/redo"
-            android:paddingHorizontal="5dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_redo"
-
-            />
-
-        <TextView
-            android:id="@+id/btn_done"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="end"
-            android:text="Terminé"
-            android:textColor="#2196F3"
-            android:textSize="13sp" />
-    </LinearLayout>
-
-</RelativeLayout>
+    </RelativeLayout>
+</FrameLayout>

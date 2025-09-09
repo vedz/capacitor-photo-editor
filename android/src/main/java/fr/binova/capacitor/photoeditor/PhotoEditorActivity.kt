@@ -12,16 +12,12 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import fr.binova.capacitor.photoeditor.PhotoEditor
-import fr.binova.capacitor.photoeditor.PhotoEditorView
 import fr.binova.capacitor.photoeditor.shape.ShapeBuilder
 import fr.binova.capacitor.photoeditor.shape.ShapeType
 import java.io.File
 import android.graphics.Paint
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.GradientDrawable
-import android.nfc.Tag
-import android.os.Environment
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -35,6 +31,7 @@ import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresPermission
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
@@ -44,13 +41,12 @@ import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
 import com.skydoves.colorpickerview.preference.ColorPickerPreferenceManager
 import com.skydoves.colorpickerview.sliders.AlphaSlideBar
 import com.skydoves.colorpickerview.sliders.BrightnessSlideBar
-import fr.binova.capacitor.photoeditor.OnPhotoEditorListener
-import fr.binova.capacitor.photoeditor.SaveSettings
-import fr.binova.capacitor.photoeditor.TextStyleBuilder
-import fr.binova.capacitor.photoeditor.ViewType
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import fr.binova.capacitor.photoeditor.databinding.ActivityPhotoEditorBinding
 import androidx.core.graphics.drawable.toDrawable
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -88,6 +84,7 @@ class PhotoEditorActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
@@ -99,6 +96,16 @@ class PhotoEditorActivity : AppCompatActivity() {
         binding = ActivityPhotoEditorBinding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.setDisplayShowTitleEnabled(false)
+
+        // une vue de scrim en haut
+        val root = binding.root
+
+
+        ViewCompat.setOnApplyWindowInsetsListener(root) { v, insets ->
+            val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())// positionner les scrims
+            v.updatePadding(top = bars.top, bottom = bars.bottom)
+            insets
+        }
 
         photoEditorView = findViewById<PhotoEditorView>(R.id.photo_editor_view)
         imagePath = intent.getStringExtra("imagePath") ?: run {
